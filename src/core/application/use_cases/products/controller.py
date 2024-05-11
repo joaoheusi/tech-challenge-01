@@ -6,7 +6,7 @@ from src.core.domain.models.product import Product
 
 
 class ProductsUseCasesController:
-
+    @staticmethod
     async def get_products(product_id: str) -> Product | None:
         get_product_use_case = container.get(GetProductUseCase)
         product = await get_product_use_case.execute(product_id)

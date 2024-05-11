@@ -8,7 +8,6 @@ app = FastAPI()
 app.include_router(base_router)
 
 
-@app.get("/")
-def read_root():
-
-    return {"Olá": "Luciano e Sabrina"}
+@app.get("/ping")
+def ping():
+    return {"ping": "pong."}
