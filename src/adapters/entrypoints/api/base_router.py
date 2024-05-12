@@ -1,6 +1,6 @@
 from fastapi.routing import APIRouter
 
-from src.adapters.entrypoints.api.v1.index import v1_router
+from src.adapters.entrypoints.api.v1.v1_router import v1_router
 
 base_router = APIRouter()
 
