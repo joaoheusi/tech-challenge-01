@@ -10,4 +10,4 @@ class GetProductUseCase:
         self.products_repository = products_repository
 
     async def execute(self, product_id: str):
-        return await self.products_repository.get_product_by_id(product_id)
+        return await self.products_repository.find_product_by_id(product_id)
