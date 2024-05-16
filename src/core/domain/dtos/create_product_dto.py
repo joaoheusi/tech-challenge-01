@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from core.domain.enums.product_category_enum import ProductCategoryEnum
+from src.core.domain.enums.product_category_enum import ProductCategoryEnum
 
 
 class CreateProductDto(BaseModel):

@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
-from core.domain.dtos.create_product_dto import CreateProductDto
-from core.domain.dtos.patch_product_dto import PatchProductDto
+from src.core.domain.dtos.create_product_dto import CreateProductDto
+from src.core.domain.dtos.patch_product_dto import PatchProductDto
 from src.core.domain.models.product import Product
 
 
