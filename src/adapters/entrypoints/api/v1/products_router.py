@@ -6,7 +6,7 @@ from src.core.application.use_cases.products.controller import (
 from src.core.domain.dtos.create_product_dto import CreateProductDto
 from src.core.domain.dtos.patch_product_dto import PatchProductDto
 
-products_router = APIRouter(prefix="/products")
+products_router = APIRouter(prefix="/products", tags=["products"])
 
 
 @products_router.get("/{product_id}")
