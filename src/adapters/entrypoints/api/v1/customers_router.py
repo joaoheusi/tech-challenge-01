@@ -9,7 +9,11 @@ from src.core.domain.models.customer import Customer
 customers_router = APIRouter(prefix="/customers", tags=["customers"])
 
 
-@customers_router.get("/{identifier}", response_model=Customer)
+@customers_router.get(
+    "/{identifier}",
+    response_model=Customer,
+    description="Identifier can be either the customer's id, email or cpf.",
+)
 async def get_customer(identifier: str) -> Customer | None:
     customer = await CustomersUseCasesController.get_customer_by_identifier(
         identifier=identifier
