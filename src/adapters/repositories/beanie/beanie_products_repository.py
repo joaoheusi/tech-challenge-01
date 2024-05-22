@@ -1,5 +1,6 @@
 from src.adapters.repositories.beanie.documents.product_document import ProductDocument
 from src.core.domain.dtos.product.create_product_dto import CreateProductDto
+from src.core.domain.dtos.product.get_products_filters_dto import GetProductsFiltersDto
 from src.core.domain.dtos.product.patch_product_dto import PatchProductDto
 from src.core.domain.models.product import Product
 from src.core.domain.repositories.products_port import ProductsPort
@@ -15,8 +16,20 @@ class BeanieProductsRepository(ProductsPort):
             return None
         return product
 
-    async def find_products(self) -> list[Product]:
-        products = await ProductDocument.find().project(Product).to_list()
+    async def find_products(
+        self, filters: GetProductsFiltersDto | None = None
+    ) -> list[Product]:
+        search_filters = []
+        if filters is not None:
+            if filters.category is not None:
+                search_filters.append(ProductDocument.category == filters.category)
+            if filters.isActive is not None:
+                search_filters.append(ProductDocument.isActive == filters.isActive)
+            if filters.onlyInStock is not None and filters.onlyInStock is True:
+                search_filters.append(ProductDocument.availableAmount > 0)
+        products = (
+            await ProductDocument.find(*search_filters).project(Product).to_list()
+        )
         return products
 
     async def create_product(self, product: CreateProductDto) -> Product:

@@ -6,6 +6,7 @@ from src.core.application.use_cases.products.get_product import (  # noqa
 from src.core.application.use_cases.products.get_products import GetProductsUseCase
 from src.core.application.use_cases.products.update_product import UpdateProductUseCase
 from src.core.domain.dtos.product.create_product_dto import CreateProductDto
+from src.core.domain.dtos.product.get_products_filters_dto import GetProductsFiltersDto
 from src.core.domain.dtos.product.patch_product_dto import PatchProductDto
 from src.core.domain.models.product import Product
 
@@ -18,9 +19,9 @@ class ProductsUseCasesController:
         return product
 
     @staticmethod
-    async def get_products() -> list[Product]:
+    async def get_products(filters: GetProductsFiltersDto) -> list[Product]:
         get_products_use_case = container.get(GetProductsUseCase)
-        product = await get_products_use_case.execute()
+        product = await get_products_use_case.execute(filters=filters)
         return product
 
     @staticmethod

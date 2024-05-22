@@ -1,9 +1,13 @@
+from typing import Annotated
+
+from fastapi.params import Depends
 from fastapi.routing import APIRouter
 
 from src.core.application.use_cases.products.controller import (
     ProductsUseCasesController,
 )
 from src.core.domain.dtos.product.create_product_dto import CreateProductDto
+from src.core.domain.dtos.product.get_products_filters_dto import GetProductsFiltersDto
 from src.core.domain.dtos.product.patch_product_dto import PatchProductDto
 from src.core.domain.models.product import Product
 
@@ -16,13 +20,16 @@ async def get_product_by_id(product_id: str) -> Product | None:
     return product
 
 
-@products_router.get("/", response_model=list[Product])
-async def get_products() -> list[Product]:
-    products = await ProductsUseCasesController.get_products()
+@products_router.get("", response_model=list[Product])
+async def get_products(
+    filters: Annotated[GetProductsFiltersDto, Depends()],
+) -> list[Product]:
+    print(filters.model_dump())
+    products = await ProductsUseCasesController.get_products(filters=filters)
     return products
 
 
-@products_router.post("/", response_model=Product)
+@products_router.post("", response_model=Product)
 async def create_product(product: CreateProductDto) -> Product:
     created_product = await ProductsUseCasesController.create_product(product=product)
     return created_product

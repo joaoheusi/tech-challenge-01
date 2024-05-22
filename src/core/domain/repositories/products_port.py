@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 
 from src.core.domain.dtos.product.create_product_dto import CreateProductDto
+from src.core.domain.dtos.product.get_products_filters_dto import GetProductsFiltersDto
 from src.core.domain.dtos.product.patch_product_dto import PatchProductDto
 from src.core.domain.models.product import Product
 
@@ -12,7 +13,9 @@ class ProductsPort(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def find_products(self) -> list[Product]:
+    async def find_products(
+        self, filters: GetProductsFiltersDto | None = None
+    ) -> list[Product]:
         raise NotImplementedError
 
     @abstractmethod
