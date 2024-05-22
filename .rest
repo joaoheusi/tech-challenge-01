@@ -1,0 +1,57 @@
+
+@url = http://localhost:8000
+
+GET {{url}}/v1/products
+
+###
+
+GET {{url}}/v1/products/11d70ce6-9ad2-44fc-880f-b2994ca4ff6b
+
+
+### 
+
+POST {{url}}/v1/products
+Content-Type: application/json
+
+{
+  "label": "Big Mac",
+  "description": "The Big Mac is a hamburger sold by international fast food restaurant chain McDonald's. It was introduced in the Greater Pittsburgh area in 1967 and nationwide in 1968. It is one of the company's flagship products.",
+  "price": 5.99,
+  "availableAmount": 100,
+  "category": "SANDWICH",
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Big_Mac_hamburger.jpg/800px-Big_Mac_hamburger.jpg"
+}
+
+###
+
+PATCH {{url}}/v1/products/11d70ce6-9ad2-44fc-880f-b2994ca4ff6b
+Content-Type: application/json
+
+{
+  "label": "Not a Big Mac",
+  "description": "The Big Mac is NOT a hamburger sold by international fast food restaurant chain McDonald's. It was introduced in the Greater Pittsburgh area in 1967 and nationwide in 1968. It is one of the company's flagship products.",
+  "price": 6.19,
+  "availableAmount": 100,
+  "category": "SANDWICH",
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Big_Mac_hamburger.jpg/800px-Big_Mac_hamburger.jpg"
+}
+
+###
+
+POST {{url}}/v1/customers
+Content-Type: application/json
+
+{
+  "firstName": "joao",
+  "lastName": "marcelo",
+  "email": "joao.marcelo@fiap.com",
+  "cpf": "328.477.030-55",
+  "birthDate": "1990-01-01",
+  "phoneNumber": "11999999999"
+}
+
+###
+
+GET {{url}}/v1/customers/32847703055
+
+

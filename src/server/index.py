@@ -27,5 +27,5 @@ app.include_router(base_router)
 
 
 @app.get("/ping")
-def ping():
+def ping() -> dict[str, str]:
     return {"ping": "pong."}

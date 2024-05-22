@@ -1,13 +1,13 @@
 from src.adapters.repositories.beanie.documents.product_document import ProductDocument
-from src.core.domain.dtos.create_product_dto import CreateProductDto
-from src.core.domain.dtos.patch_product_dto import PatchProductDto
+from src.core.domain.dtos.product.create_product_dto import CreateProductDto
+from src.core.domain.dtos.product.patch_product_dto import PatchProductDto
 from src.core.domain.models.product import Product
 from src.core.domain.repositories.products_port import ProductsPort
 
 
 class BeanieProductsRepository(ProductsPort):
 
-    async def find_product_by_id(self, product_id: str) -> Product:
+    async def find_product_by_id(self, product_id: str) -> Product | None:
         product = await ProductDocument.find_one(
             ProductDocument.id == product_id
         ).project(Product)
@@ -26,7 +26,7 @@ class BeanieProductsRepository(ProductsPort):
 
     async def update_product(
         self, product_id: str, product: PatchProductDto
-    ) -> Product:
+    ) -> Product | None:
         product_exists = await ProductDocument.find_one(
             ProductDocument.id == product_id
         )
