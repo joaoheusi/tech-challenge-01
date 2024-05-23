@@ -13,6 +13,12 @@ class ProductsPort(ABC):
         raise NotImplementedError
 
     @abstractmethod
+    async def find_product_by_list_of_ids(
+        self, product_ids: list[str]
+    ) -> list[Product]:
+        raise NotImplementedError
+
+    @abstractmethod
     async def find_products(
         self, filters: GetProductsFiltersDto | None = None
     ) -> list[Product]:

@@ -15,6 +15,11 @@ class FakeProductsRepository(ProductsPort):
 
         return None
 
+    async def find_product_by_list_of_ids(
+        self, product_ids: list[str]
+    ) -> list[Product]:
+        return [product for product in self._products if product.id in product_ids]
+
     async def find_products(
         self, filters: GetProductsFiltersDto | None = None
     ) -> list[Product]:

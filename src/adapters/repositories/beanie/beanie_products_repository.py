@@ -1,3 +1,5 @@
+from beanie.operators import In
+
 from src.adapters.repositories.beanie.documents.product_document import ProductDocument
 from src.core.domain.dtos.product.create_product_dto import CreateProductDto
 from src.core.domain.dtos.product.get_products_filters_dto import GetProductsFiltersDto
@@ -15,6 +17,18 @@ class BeanieProductsRepository(ProductsPort):
         if not product:
             return None
         return product
+
+    async def find_product_by_list_of_ids(
+        self, product_ids: list[str]
+    ) -> list[Product]:
+        products = (
+            await ProductDocument.find(
+                In(ProductDocument.id, product_ids),  # type: ignore
+            )
+            .project(Product)
+            .to_list()
+        )
+        return products
 
     async def find_products(
         self, filters: GetProductsFiltersDto | None = None

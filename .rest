@@ -1,7 +1,7 @@
 
 @url = http://localhost:8000
 
-GET {{url}}/v1/products?category=SANDWICH&isActive=true&onlyInStock=true
+GET {{url}}/v1/products
 
 
 ###
@@ -56,3 +56,32 @@ Content-Type: application/json
 GET {{url}}/v1/customers/32847703055
 
 
+###
+
+GET {{url}}/v1/customers
+
+###
+
+POST {{url}}/v1/orders
+Content-Type: application/json
+
+{
+  "customerId": "79f851f9-2b34-48b2-8ea8-b17e03e24bb7",
+  "preItems": [
+    {
+      "productId": "8d7b168d-51f8-4db6-9e73-3236c716af52",
+      "quantity": 10
+    },
+    {
+      "productId": "cc3ec9c0-2d39-43f8-ae48-98a30fac7e12",
+      "quantity": 2
+    },
+    {
+      "productId": "11d70ce6-9ad2-44fc-880f-b2994ca4ff6b",
+      "quantity": 10
+    }
+  ]
+}
+
+###
+GET {{url}}/v1/orders
