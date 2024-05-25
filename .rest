@@ -29,10 +29,11 @@ PATCH {{url}}/v1/products/11d70ce6-9ad2-44fc-880f-b2994ca4ff6b
 Content-Type: application/json
 
 {
-  "label": "Not a Big Mac",
-  "description": "The Big Mac is NOT a hamburger sold by international fast food restaurant chain McDonald's. It was introduced in the Greater Pittsburgh area in 1967 and nationwide in 1968. It is one of the company's flagship products.",
+  "label": "Big Mac",
+  "description": "The Big Mac is a hamburger sold by international fast food restaurant chain McDonald's. It was introduced in the Greater Pittsburgh area in 1967 and nationwide in 1968. It is one of the company's flagship products.",
   "price": 6.19,
-  "availableAmount": 0,
+  "availableAmount": 10,
+  "isActive": true,
   "category": "SANDWICH",
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Big_Mac_hamburger.jpg/800px-Big_Mac_hamburger.jpg"
 }
@@ -45,8 +46,8 @@ Content-Type: application/json
 {
   "firstName": "joao",
   "lastName": "marcelo",
-  "email": "joao.marcelo@fiap.com",
-  "cpf": "328.477.030-55",
+  "email": "joao.marcelo@fisap.com",
+  "cpf": "523.229.760-08",
   "birthDate": "1990-01-01",
   "phoneNumber": "11999999999"
 }
@@ -70,7 +71,7 @@ Content-Type: application/json
   "preItems": [
     {
       "productId": "8d7b168d-51f8-4db6-9e73-3236c716af52",
-      "quantity": 10
+      "quantity": 120312
     },
     {
       "productId": "cc3ec9c0-2d39-43f8-ae48-98a30fac7e12",
@@ -84,4 +85,5 @@ Content-Type: application/json
 }
 
 ###
-GET {{url}}/v1/orders
+GET {{url}}/v1/orders?status=CREATED
+Content-Type: application/json

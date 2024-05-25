@@ -2,6 +2,7 @@ from injector import inject
 
 from src.core.domain.models.customer import Customer
 from src.core.domain.repositories.customers_port import CustomersPort
+from src.core.excecptions.application_exceptions import ApplicationExceptions
 
 
 class GetCustomerUseCase:
@@ -10,7 +11,7 @@ class GetCustomerUseCase:
     def __init__(self, customers_repository: CustomersPort):
         self.customers_repository = customers_repository
 
-    async def execute(self, identifier: str) -> Customer | None:
+    async def execute(self, identifier: str) -> Customer:
         customer_found_by_id = await self.customers_repository.find_customer_by_id(
             customer_id=identifier
         )
@@ -32,4 +33,8 @@ class GetCustomerUseCase:
         if customer_found_by_email:
             return customer_found_by_email
 
-        return None
+        raise ApplicationExceptions.resource_not_found(
+            resource_name="Customer",
+            identifier=["id", "cpf", "email"],
+            identifier_value=identifier,
+        )

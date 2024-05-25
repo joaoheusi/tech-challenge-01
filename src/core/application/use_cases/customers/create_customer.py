@@ -3,8 +3,7 @@ from injector import inject
 from src.core.domain.dtos.customer.create_customer_dto import CreateCustomerDto
 from src.core.domain.models.customer import Customer
 from src.core.domain.repositories.customers_port import CustomersPort
-from src.core.utils.validate_cpf import validate_cpf
-from src.core.utils.validate_email import validate_email
+from src.core.excecptions.application_exceptions import ApplicationExceptions
 
 
 class CreateCustomerUseCase:
@@ -15,31 +14,25 @@ class CreateCustomerUseCase:
 
     async def execute(self, customer: CreateCustomerDto) -> Customer:
 
-        cpf_is_valid = await validate_cpf(customer.cpf)
-
-        if not cpf_is_valid:
-            raise ValueError("Invalid CPF.")
-
-        formatted_cpf = customer.cpf.replace(".", "").replace("-", "")
-
-        customer.cpf = formatted_cpf
-
-        email_is_valid = await validate_email(customer.email)
-
-        if not email_is_valid:
-            raise ValueError("Invalid Email.")
-
         existing_customer_with_email = (
             await self.customers_repository.find_customer_by_email(email=customer.email)
         )
 
         if existing_customer_with_email:
-            raise ValueError("Customer already exists with this email.")
+            raise ApplicationExceptions.resource_already_exists(
+                resource_name="Customer",
+                identifier=["email"],
+                identifier_value=customer.email,
+            )
 
         existing_customer_with_cpf = (
             await self.customers_repository.find_customer_by_cpf(cpf=customer.cpf)
         )
         if existing_customer_with_cpf:
-            raise ValueError("Customer already exists with this CPF.")
+            raise ApplicationExceptions.resource_already_exists(
+                resource_name="Customer",
+                identifier=["cpf"],
+                identifier_value=customer.cpf,
+            )
 
         return await self.customers_repository.create_customer(customer)

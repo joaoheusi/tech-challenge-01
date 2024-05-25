@@ -7,6 +7,7 @@ from src.core.domain.enums.order_status_enum import OrderStatusEnum
 from src.core.domain.models.order import Order
 from src.core.domain.repositories.orders_port import OrdersPort
 from src.core.domain.repositories.products_port import ProductsPort
+from src.core.excecptions.application_exceptions import ApplicationExceptions
 
 
 class CreateOrderUseCase:
@@ -29,14 +30,20 @@ class CreateOrderUseCase:
                 None,
             )
             if not product:
-                raise Exception("Product not found")
+                raise ApplicationExceptions.resource_not_found(
+                    resource_name="Product",
+                    identifier=["id"],
+                    identifier_value=preItem.productId,
+                )
             if not product.isActive:
-                raise Exception("Product is not active")
+                raise ApplicationExceptions.product_inactive(
+                    product_id=product.id,
+                )
             if product.availableAmount < preItem.quantity:
-                raise Exception(
-                    f"""Product not available in requested quantity.
-                        Requested: {preItem.quantity}.
-                        Available: {product.availableAmount}."""
+                raise ApplicationExceptions.product_not_available(
+                    product_id=product.id,
+                    requested_quantity=preItem.quantity,
+                    available_quantity=product.availableAmount,
                 )
             product.availableAmount -= preItem.quantity
 
