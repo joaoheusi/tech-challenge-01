@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from uuid import uuid4
 
 from pydantic import BaseModel, Field
@@ -12,5 +12,8 @@ class Order(BaseModel):
     status: OrderStatusEnum
     items: list[OrderItem]
     totalPrice: float
-    customerId: str
+    customerId: str | None = None
     createdAt: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    estimatedTimeToReady: datetime | None = Field(
+        default_factory=lambda: datetime.now(timezone.utc) + timedelta(minutes=10)
+    )

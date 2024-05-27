@@ -1,7 +1,10 @@
+from datetime import datetime, timedelta, timezone
+
 from injector import inject
 
 from src.core.domain.dtos.order_item import OrderItem
 from src.core.domain.dtos.orders.create_order_dto import CreateOrderDto
+from src.core.domain.dtos.orders.get_orders_filters_dto import GetOrdersFiltersDto
 from src.core.domain.dtos.product.patch_product_dto import PatchProductDto
 from src.core.domain.enums.order_status_enum import OrderStatusEnum
 from src.core.domain.models.order import Order
@@ -63,11 +66,26 @@ class CreateOrderUseCase:
 
         totalPrice = sum([item.quantity * item.unitaryPrice for item in order_items])
 
+        orders_being_prepared = await self.orders_repository.get_orders(
+            filters=GetOrdersFiltersDto(status=OrderStatusEnum.PREPARING)
+        )
+
+        # If this grows to a more complex logic, we should move it to a service
+        estimated_time_minutes_to_ready = 10
+
+        if orders_being_prepared:
+            estimated_time_minutes_to_ready += len(orders_being_prepared) * 5
+
+        estimated_time_to_ready = datetime.now(timezone.utc) + timedelta(
+            minutes=estimated_time_minutes_to_ready
+        )
+
         order_to_create = Order(
             items=order_items,
-            status=OrderStatusEnum.CREATED,
+            status=OrderStatusEnum.RECEIVED,
             totalPrice=totalPrice,
             customerId=order.customerId,
+            estimatedTimeToReady=estimated_time_to_ready,
         )
 
         created_order = await self.orders_repository.create_order(order=order_to_create)

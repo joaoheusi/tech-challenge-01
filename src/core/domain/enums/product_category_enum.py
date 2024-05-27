@@ -5,3 +5,4 @@ class ProductCategoryEnum(str, Enum):
     SANDWICH = "SANDWICH"
     DRINK = "DRINK"
     SIDE = "SIDE"
+    DESSERT = "DESSERT"
