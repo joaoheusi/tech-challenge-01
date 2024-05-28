@@ -4,6 +4,8 @@ services:
       context: .
       dockerfile: dockerfile.server
     restart: always
+    volumes:
+      - ./src/:/code/src/
     ports:
       - 80:80
     depends_on:

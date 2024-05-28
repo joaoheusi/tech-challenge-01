@@ -5,4 +5,4 @@ from src.core.domain.dtos.order_pre_item import OrderPreItem
 
 class CreateOrderDto(BaseModel):
     preItems: list[OrderPreItem]
-    customerId: str
+    customerId: str | None = None
