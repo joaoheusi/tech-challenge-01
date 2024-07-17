@@ -11,6 +11,7 @@ class Order(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid4()), alias="_id")
     status: OrderStatusEnum
     items: list[OrderItem]
+    paymentId: str | None = None
     totalPrice: float
     customerId: str | None = None
     createdAt: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))

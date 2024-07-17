@@ -1,4 +1,7 @@
+import os
 from typing import Any
+
+from dotenv import load_dotenv
 
 from src.gateways.repositories.beanie.documents.customer_document import (
     CustomerDocument,
@@ -6,7 +9,10 @@ from src.gateways.repositories.beanie.documents.customer_document import (
 from src.gateways.repositories.beanie.documents.order_document import OrderDocument
 from src.gateways.repositories.beanie.documents.product_document import ProductDocument
 
-MONGODB_URL_DOCKER = "mongodb://mongo:27017"
+load_dotenv()
+
+
+MONGODB_URL = os.getenv("MONGODB_URL")
 
 DOCUMENT_MODELS: list[Any] = [
     ProductDocument,

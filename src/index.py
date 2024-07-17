@@ -5,12 +5,12 @@ from fastapi import FastAPI
 from motor.motor_asyncio import AsyncIOMotorClient
 
 from src.api.base_router import base_router
-from src.config.odm.beanie.configs import DOCUMENT_MODELS, MONGODB_URL_DOCKER
+from src.config.odm.beanie.configs import DOCUMENT_MODELS, MONGODB_URL
 
 
 async def start_beanie() -> None:
     print("Starting beanie")
-    database = AsyncIOMotorClient(MONGODB_URL_DOCKER).fiap
+    database = AsyncIOMotorClient(MONGODB_URL).fiap
     await init_beanie(database=database, document_models=DOCUMENT_MODELS)
     print("Finished starting beanie")
 
