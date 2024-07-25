@@ -104,6 +104,10 @@ Content-Type: application/json
 GET {{url}}/v1/orders/1e4da7f2-e1e0-40cb-b78f-943551d23116
 Content-Type: application/json
 
+###
+POST {{url}}/v1/orders/b08e4774-f396-4f46-a77d-fb532e93128f/complete
+Content-Type: application/json
+
 
 
 
