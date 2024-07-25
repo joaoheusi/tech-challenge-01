@@ -3,11 +3,13 @@ from src.entities.order import Order
 from src.entities.payment import Payment
 from src.types.dtos.create_order_dto import CreateOrderDto
 from src.types.dtos.get_orders_filters_dto import GetOrdersFiltersDto
+from src.use_cases.orders.complete_order_use_case import CompleteOrderUseCase
 from src.use_cases.orders.create_order import CreateOrderUseCase
 from src.use_cases.orders.get_ongoing_orders_use_case import GetOngoingOrdersUseCase
 from src.use_cases.orders.get_order import GetOrderUseCase
 from src.use_cases.orders.get_order_paymnent import GetOrderPaymentUseCase
 from src.use_cases.orders.get_orders import GetOrdersUseCase
+from src.use_cases.orders.ready_order_use_case import ReadyOrderUseCase
 
 
 class OrdersUseCasesController:
@@ -41,3 +43,15 @@ class OrdersUseCasesController:
         get_ongoing_orders_use_case = container.get(GetOngoingOrdersUseCase)
         result = await get_ongoing_orders_use_case.execute()
         return result
+    
+    @staticmethod
+    async def ready_order(order_id: str) -> Order:
+        ready_order_use_case = container.get(ReadyOrderUseCase)
+        order = await ready_order_use_case.execute(order_id)
+        return order
+
+    @staticmethod
+    async def complete_order(order_id: str) -> Order:
+        complete_order_use_case = container.get(CompleteOrderUseCase)
+        order = await complete_order_use_case.execute(order_id)
+        return order

@@ -73,3 +73,13 @@ class ApplicationExceptions:
                 "message": f"Error updating order {order_id} with payment {payment_id}",
             },
         )
+    
+    @staticmethod
+    def invalid_order_operation() -> HTTPException:
+        return HTTPException(
+            status_code=409,
+            detail={
+                "error_code": "INVALID_ORDER_OPERATION",
+                "message": "Invalid order operation",
+            },
+        )
