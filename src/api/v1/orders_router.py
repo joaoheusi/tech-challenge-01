@@ -42,11 +42,3 @@ async def get_ongoing_orders() -> list[Order]:
 async def get_order(order_id: str) -> Order:
     payment = await OrdersUseCasesController.get_order(order_id=order_id)
     return payment
-
-
-# iv. A lista de pedidos deverá retorná-los com suas descrições, ordenados com
-# a seguinte regra:
-
-# 1. Pronto > Em Preparação > Recebido;
-# 2. Pedidos mais antigos primeiro e mais novos depois;
-# 3. Pedidos com status Finalizado não devem aparecer na lista.

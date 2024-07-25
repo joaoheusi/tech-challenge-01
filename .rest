@@ -89,6 +89,11 @@ GET {{url}}/v1/orders
 Content-Type: application/json
 
 
+###
+GET {{url}}/v1/orders/ongoing
+Content-Type: application/json
+
+
 
 ###
 GET {{url}}/v1/orders/1e4da7f2-e1e0-40cb-b78f-943551d23116/payment
