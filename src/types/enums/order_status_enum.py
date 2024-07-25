@@ -6,3 +6,4 @@ class OrderStatusEnum(str, Enum):
     PREPARING = "PREPARING"
     READY = "READY"
     COMPLETED = "COMPLETED"
+    CANCELED = "CANCELED"

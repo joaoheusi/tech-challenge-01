@@ -16,6 +16,7 @@ pre-commit = "^3.7.0"
 pydantic = "^2.7.1"
 injector = "^0.21.0"
 beanie = "^1.26.0"
+mercadopago = "^2.2.3"
 
 
 [build-system]

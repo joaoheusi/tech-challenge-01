@@ -8,6 +8,10 @@ GET {{url}}/v1/products
 
 GET {{url}}/v1/products/11d70ce6-9ad2-44fc-880f-b2994ca4ff6b
 
+###
+
+POST {{url}}/v1/payments
+
 
 ### 
 
@@ -70,20 +74,52 @@ Content-Type: application/json
   "customerId": "79f851f9-2b34-48b2-8ea8-b17e03e24bb7",
   "preItems": [
     {
-      "productId": "8d7b168d-51f8-4db6-9e73-3236c716af52",
-      "quantity": 120312
-    },
-    {
-      "productId": "cc3ec9c0-2d39-43f8-ae48-98a30fac7e12",
-      "quantity": 2
-    },
-    {
-      "productId": "11d70ce6-9ad2-44fc-880f-b2994ca4ff6b",
-      "quantity": 10
+      "productId": "1e484ab2-b160-434a-83c3-e3bebbcde5f3",
+      "quantity": 1
     }
   ]
 }
 
 ###
-GET {{url}}/v1/orders?status=CREATED
+GET {{url}}/v1/orders?status=RECEIVED
 Content-Type: application/json
+
+###
+GET {{url}}/v1/orders
+Content-Type: application/json
+
+
+
+###
+GET {{url}}/v1/orders/1e4da7f2-e1e0-40cb-b78f-943551d23116/payment
+Content-Type: application/json
+
+
+###
+GET {{url}}/v1/orders/1e4da7f2-e1e0-40cb-b78f-943551d23116
+Content-Type: application/json
+
+
+
+
+
+###
+POST {{url}}/v1/notifications
+Content-Type: application/json
+
+
+{
+  "action": "payment.updated",
+  "api_version": "v1",
+  "data": {
+    "id": "83339181737"
+  },
+  "date_created": "2024-07-24T00:42:49Z",
+  "id": 114858259850,
+  "live_mode": true,
+  "type": "payment",
+  "user_id": "1908855445"
+}
+
+
+

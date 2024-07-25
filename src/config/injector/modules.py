@@ -1,20 +1,28 @@
 from injector import Module, provider, singleton
 
+from src.gateways.providers.mercado_pago.mercado_pago_payments_provider import (
+    MercadoPagoPaymentsProvider,
+)
 from src.gateways.repositories.beanie.beanie_customers_repository import (
     BeanieCustomersRepository,
 )
 from src.gateways.repositories.beanie.beanie_orders_repository import (
     BeanieOrdersRepository,
 )
+from src.gateways.repositories.beanie.beanie_payments_repository import (
+    BeaniePaymentsRepository,
+)
 from src.gateways.repositories.beanie.beanie_products_repository import (
     BeanieProductsRepository,
 )
+from src.interfaces.providers.payments_provider import PaymentsProvider
 from src.interfaces.repositories.customers_repository import CustomersRepository
 
 # from src.adapters.repositories.fake.fake_products_repository import (
 #     FakeProductsRepository,
 # )
 from src.interfaces.repositories.orders_repository import OrdersRepository
+from src.interfaces.repositories.payments_repository import PaymentsRepository
 from src.interfaces.repositories.products_repository import ProductsRepository
 
 
@@ -37,3 +45,17 @@ class OrdersRepositoryModule(Module):
     @provider
     def provide_orders_repository(self) -> OrdersRepository:
         return BeanieOrdersRepository()
+
+
+class PaymentsProviderModule(Module):
+    @singleton
+    @provider
+    def provide_payment_provider(self) -> PaymentsProvider:
+        return MercadoPagoPaymentsProvider()
+
+
+class PaymentsRepositoryModule(Module):
+    @singleton
+    @provider
+    def provide_payments_repository(self) -> PaymentsRepository:
+        return BeaniePaymentsRepository()

@@ -60,3 +60,16 @@ class ApplicationExceptions:
                 f"Available: {available_quantity}.",
             },
         )
+
+    @staticmethod
+    def error_updating_order_payment(
+        order_id: str,
+        payment_id: str,
+    ) -> HTTPException:
+        return HTTPException(
+            status_code=500,
+            detail={
+                "error_code": "ERROR_UPDATING_ORDER_PAYMENT",
+                "message": f"Error updating order {order_id} with payment {payment_id}",
+            },
+        )
