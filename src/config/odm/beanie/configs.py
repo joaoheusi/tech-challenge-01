@@ -7,6 +7,7 @@ from src.gateways.repositories.beanie.documents.customer_document import (
     CustomerDocument,
 )
 from src.gateways.repositories.beanie.documents.order_document import OrderDocument
+from src.gateways.repositories.beanie.documents.payment_document import PaymentDocument
 from src.gateways.repositories.beanie.documents.product_document import ProductDocument
 
 load_dotenv()
@@ -18,4 +19,5 @@ DOCUMENT_MODELS: list[Any] = [
     ProductDocument,
     CustomerDocument,
     OrderDocument,
+    PaymentDocument,
 ]

@@ -4,12 +4,16 @@ from injector import inject
 
 from src.entities.order import Order
 from src.excecptions.application_exceptions import ApplicationExceptions
+from src.interfaces.providers.payments_provider import PaymentsProvider
 from src.interfaces.repositories.orders_repository import OrdersRepository
+from src.interfaces.repositories.payments_repository import PaymentsRepository
 from src.interfaces.repositories.products_repository import ProductsRepository
 from src.types.dtos.create_order_dto import CreateOrderDto
+from src.types.dtos.create_payment_dto import CreatePaymentDto
 from src.types.dtos.get_orders_filters_dto import GetOrdersFiltersDto
 from src.types.dtos.patch_product_dto import PatchProductDto
 from src.types.enums.order_status_enum import OrderStatusEnum
+from src.types.enums.payment_status_enum import PaymentStatusEnum
 from src.types.order_item import OrderItem
 
 
@@ -19,9 +23,13 @@ class CreateOrderUseCase:
         self,
         orders_repository: OrdersRepository,
         products_repository: ProductsRepository,
+        payments_repository: PaymentsRepository,
+        payments_provider: PaymentsProvider,
     ):
         self.orders_repository = orders_repository
         self.products_repository = products_repository
+        self.payments_repository = payments_repository
+        self.payments_provider = payments_provider
 
     async def execute(self, order: CreateOrderDto) -> Order:
         products_ids = [preItem.productId for preItem in order.preItems]
@@ -91,5 +99,30 @@ class CreateOrderUseCase:
         )
 
         created_order = await self.orders_repository.create_order(order=order_to_create)
+        print(totalPrice)
 
-        return created_order
+        external_payment = await self.payments_provider.create_payment(
+            order_id=created_order.id, amount=totalPrice, products=products_ids
+        )
+
+        payment = await self.payments_repository.create_payment(
+            CreatePaymentDto(
+                externalId=external_payment.externalId,
+                paymentLink=external_payment.paymentLink,
+                status=PaymentStatusEnum.PENDING,
+                amount=totalPrice,
+                orderId=created_order.id,
+            )
+        )
+
+        created_order.paymentId = payment.id
+
+        created_order_with_payment = await self.orders_repository.update_order(
+            order=created_order
+        )
+        if not created_order_with_payment:
+            raise ApplicationExceptions.error_updating_order_payment(
+                order_id=created_order.id, payment_id=payment.id
+            )
+
+        return created_order_with_payment
