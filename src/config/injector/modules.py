@@ -1,5 +1,6 @@
 from injector import Module, provider, singleton
 
+from src.gateways.providers.fake.fake_payments_provider import FakePaymentProvider
 from src.gateways.providers.mercado_pago.mercado_pago_payments_provider import (
     MercadoPagoPaymentsProvider,
 )
@@ -51,7 +52,9 @@ class PaymentsProviderModule(Module):
     @singleton
     @provider
     def provide_payment_provider(self) -> PaymentsProvider:
-        return MercadoPagoPaymentsProvider()
+        # To enable MercadoPago payment gateway, uncomment line 56
+        # return MercadoPagoPaymentsProvider()
+        return FakePaymentProvider()
 
 
 class PaymentsRepositoryModule(Module):

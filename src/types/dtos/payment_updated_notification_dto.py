@@ -2,17 +2,17 @@ from datetime import datetime
 
 from pydantic import BaseModel
 
-
-class PaymentUpdatedNotificationDataDto(BaseModel):
-    id: str
+from src.types.dtos.payment_updated_notification_data_dto import (
+    PaymentUpdatedNotificationDataDto,
+)
 
 
 class PaymentUpdatedNotificationDto(BaseModel):
     action: str
-    api_version: str
+    api_version: str | None = None
     data: PaymentUpdatedNotificationDataDto
-    date_created: datetime
-    id: int
-    live_mode: bool
-    type: str
-    user_id: str
+    date_created: datetime | None = None
+    id: int | None = None
+    live_mode: bool | None = None
+    type: str | None = None
+    user_id: str | None = None

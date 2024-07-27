@@ -1,23 +1,21 @@
-from typing import Any
-
-from fastapi import Body
-from fastapi.encoders import jsonable_encoder
+from fastapi import Body, status
 from fastapi.responses import JSONResponse
 from fastapi.routing import APIRouter
 
 from src.controllers.notifications_controller import NotificationsController
+from src.types.dtos.generic_notification_data import GenericNotificationDataDto
 
 notifications_router = APIRouter(prefix="/notifications", tags=["notifications"])
 
 
-@notifications_router.post("")
+@notifications_router.post("", response_model=dict[str, str])
 async def receive_notification(
-    notification_data: dict[str, Any] = Body(...),
+    notification: GenericNotificationDataDto = Body(...),
 ) -> JSONResponse:
-    response = await NotificationsController.handle_received_notification(
-        notification_data
+    await NotificationsController.handle_received_notification(
+        notification=notification
     )
     return JSONResponse(
-        content=jsonable_encoder(response),
-        status_code=200,
+        content={"message": "Notification received"},
+        status_code=status.HTTP_200_OK,
     )

@@ -31,10 +31,12 @@ async def get_order_payment(order_id: str) -> Payment:
     payment = await OrdersUseCasesController.get_order_payment(order_id=order_id)
     return payment
 
+
 @orders_router.post("/{order_id}/ready", response_model=Order)
 async def ready_order(order_id: str) -> Order:
     order = await OrdersUseCasesController.ready_order(order_id=order_id)
     return order
+
 
 @orders_router.post("/{order_id}/complete", response_model=Order)
 async def complete_order(order_id: str) -> Order:

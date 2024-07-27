@@ -96,16 +96,20 @@ Content-Type: application/json
 
 
 ###
-GET {{url}}/v1/orders/1e4da7f2-e1e0-40cb-b78f-943551d23116/payment
+GET {{url}}/v1/orders/f12b9ba3-28fb-4ed8-bd41-beb73826e128/payment
 Content-Type: application/json
 
 
 ###
-GET {{url}}/v1/orders/1e4da7f2-e1e0-40cb-b78f-943551d23116
+GET {{url}}/v1/orders/f12b9ba3-28fb-4ed8-bd41-beb73826e128
 Content-Type: application/json
 
 ###
-POST {{url}}/v1/orders/b08e4774-f396-4f46-a77d-fb532e93128f/complete
+POST {{url}}/v1/orders/f12b9ba3-28fb-4ed8-bd41-beb73826e128/ready
+Content-Type: application/json
+
+###
+POST {{url}}/v1/orders/f12b9ba3-28fb-4ed8-bd41-beb73826e128/complete
 Content-Type: application/json
 
 
@@ -119,15 +123,9 @@ Content-Type: application/json
 
 {
   "action": "payment.updated",
-  "api_version": "v1",
   "data": {
-    "id": "83339181737"
-  },
-  "date_created": "2024-07-24T00:42:49Z",
-  "id": 114858259850,
-  "live_mode": true,
-  "type": "payment",
-  "user_id": "1908855445"
+    "id": "6696bb74-73ea-475c-a819-469dc862a382"
+  }
 }
 
 
