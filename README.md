@@ -25,6 +25,10 @@ for:
 ```bash
 path: /home/YOUR-USER/tech-challenge-01/infra/data
 ```
+Start k8s with kubectl
+```bash
+kubectl apply -f /home/YOUR-USER/tech-challenge-01/infra
+```
 
 ## FastAPI
 
