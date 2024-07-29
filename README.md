@@ -3,7 +3,28 @@
 
 Self-service system developed for an expanding snack bar, aimed at solving issues of confusion and delays in orders.
 
+## K8S
 
+To use k8s (with minikube) with this application, you need clone repository and configure path on PV:
+```bash
+minikube start
+git clone https://github.com/joaoheusi/tech-challenge-01.git
+cd tech-challenge-01/infra
+mkdir data
+cp -pv .env.example .env
+```
+Edit pv.yaml to customize hostPath
+```bash
+vi pv.yaml
+```
+Change pv.yaml on line 16:
+```bash
+path: /home/$(whoami)/tech-challenge-01/infra/data
+```
+for:
+```bash
+path: /home/YOUR-USER/tech-challenge-01/infra/data
+```
 
 In the first phase, the following functionalities were developed for the API:
 
