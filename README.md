@@ -26,6 +26,8 @@ for:
 path: /home/YOUR-USER/tech-challenge-01/infra/data
 ```
 
+## FastAPI
+
 In the first phase, the following functionalities were developed for the API:
 
 * Customer Registration
