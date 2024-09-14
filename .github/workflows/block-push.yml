@@ -1,16 +1,18 @@
-name: Block Pushes
+# .github/workflows/block-commit.yml
+name: Block Commits to Main Branch
 
 on:
   push:
     branches:
-      - 'main'   # Block pushes to the 'main' branch
-      - 'master' # You can add more branches here as needed
+      - main  # Specify which branch you want to block commits on
+      - master
 
 jobs:
-  block_push:
+  block_commit:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Block push
+      - name: Block commits
         run: |
-          echo "Pushes to this branch are not allowed."
-          exit 1 # This exits with a non-zero code, which fails the job and blocks the push
+          echo "Commits are not allowed on the main branch."
+          exit 1  # Exit with a failure code to block the push
