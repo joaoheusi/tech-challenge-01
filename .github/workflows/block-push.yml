@@ -1,0 +1,16 @@
+name: Block Push to Repository
+
+on: 
+  push:
+    branches:
+      - main  # You can specify the branch to block pushes on
+
+jobs:
+  block_push:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Block push action
+      run: |
+        echo "Push is not allowed on this branch."
+        exit 1  # This makes the job fail, blocking the push
