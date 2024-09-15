@@ -1,0 +1,32 @@
+name: Pull Repository
+
+# Controls when the action will run
+on:
+  schedule:
+    - cron: '0 0 * * *' # Every day at midnight
+  workflow_dispatch: # Allows manual trigger
+
+# The list of jobs to be run by the workflow
+jobs:
+  pull-repo:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout the current repository
+      uses: actions/checkout@v2
+
+    - name: Pull External Repository
+      run: |
+        git clone https://github.com/username/external-repository.git
+        cd external-repository
+        git pull origin main
+
+    - name: Push Changes to this Repository
+      run: |
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
+        git add .
+        git commit -m "Update from external repository"
+        git push origin main
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Uses GitHub Actions' default token
