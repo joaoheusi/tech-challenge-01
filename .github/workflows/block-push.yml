@@ -1,18 +1,17 @@
-# .github/workflows/block-commit.yml
-name: Block Commits to Main Branch
-
-on:
+name: Block pushes
+run-name: ${{ github.actor }} is trying to push... 🚀
+on: 
   push:
     branches:
-      - main  # Specify which branch you want to block commits on
-      - master
-
-jobs:
-  block_commit:
-    runs-on: ubuntu-latest
-
+    - main
+    - master
+    - github-action
+jobs: 
+  Block-Push-Actions:
+    runs-on: ubuntu-latest    
     steps:
-      - name: Block commits
-        run: |
-          echo "Commits are not allowed on the main branch."
-          exit 1  # Exit with a failure code to block the push
+    - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+    - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+    - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+    - run: echo "Pushes to this branch are not allowed."
+    - run: exit 1 # This exits with a non-zero code, which fails the job and blocks the push
