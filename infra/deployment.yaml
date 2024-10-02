@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: fastapi
-          image: lucianomarcosjr/fastapi:latest
+          image: 
           ports:
             - containerPort: 80
           livenessProbe:

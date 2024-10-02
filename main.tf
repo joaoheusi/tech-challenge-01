@@ -102,6 +102,70 @@ resource "aws_eks_cluster" "fastapi_cluster" {
   depends_on = [aws_iam_role_policy_attachment.eks_policy]
 }
 
+# Node Group for EKS
+resource "aws_eks_node_group" "fastapi_node_group" {
+  cluster_name    = aws_eks_cluster.fastapi_cluster.name
+  node_group_name = "fastapi-node-group"
+  node_role_arn   = aws_iam_role.eks_node_role.arn
+  subnet_ids      = [aws_subnet.eks_subnet_a.id, aws_subnet.eks_subnet_b.id]
+
+  scaling_config {
+    desired_size = 2
+    max_size     = 3
+    min_size     = 1
+  }
+
+  instance_types = ["t3.small"]
+
+  disk_size = 20
+
+  remote_access {
+    ec2_ssh_key = "your-ssh-key-name"  # Replace with your key name if needed
+  }
+
+  # Enable monitoring and tags for nodes
+  ami_type = "AL2_x86_64"
+
+  tags = {
+    Environment = "production"
+  }
+}
+
+# IAM Role for EKS Worker Nodes
+resource "aws_iam_role" "eks_node_role" {
+  name = "fastapi-node-role"
+
+  assume_role_policy = jsonencode({
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Principal": {
+          "Service": "ec2.amazonaws.com"
+        },
+        "Action": "sts:AssumeRole"
+      }
+    ]
+  })
+}
+
+# Attach necessary policies to the EKS Node Role
+resource "aws_iam_role_policy_attachment" "eks_node_policy" {
+  role       = aws_iam_role.eks_node_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+}
+
+resource "aws_iam_role_policy_attachment" "eks_cni_policy" {
+  role       = aws_iam_role.eks_node_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+}
+
+resource "aws_iam_role_policy_attachment" "eks_registry_policy" {
+  role       = aws_iam_role.eks_node_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+}
+
+
 # Output the repository URL
 output "ecr_repository_url" {
   value = aws_ecr_repository.api.repository_url
