@@ -85,7 +85,7 @@ jobs:
 
       - name: Gerar .env  
         run: |
-          cat <<EOF > code/.env
+          cat <<EOF > .env
           MONGODB_URL=${{ secrets.MONGODB_URL }}
           MERCADO_PAGO_TOKEN=${{ secrets.MERCADO_PAGO_TOKEN }}
           EOF
