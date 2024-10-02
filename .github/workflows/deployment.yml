@@ -96,12 +96,24 @@ jobs:
           docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_DEFAULT_REGION }}.amazonaws.com/fastapi-server:latest 
 
 
-      - name: Run Terraform apply to update Lambda
+      - name: Run Terraform apply to update image
         env:
             AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
             AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
             AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: terraform apply -auto-approve
+
+      - name: Check if EKS Cluster exists, then create if not
+        run: |
+          CLUSTER_NAME="fastapi-cluster"
+          CLUSTER_CHECK=$(aws eks describe-cluster --name $CLUSTER_NAME --region ${{ secrets.AWS_DEFAULT_REGION }} 2>&1 || true)
+
+          if [[ $CLUSTER_CHECK == *"ResourceNotFoundException"* ]]; then
+            echo "Cluster does not exist, creating it..."
+            terraform apply -target=aws_eks_cluster.$CLUSTER_NAME -auto-approve
+          else
+            echo "Cluster exists."
+          fi
 
       - name: Update Kubeconfig
         run: |
