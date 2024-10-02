@@ -107,21 +107,16 @@ jobs:
         run: |
           CLUSTER_NAME="fastapi-cluster"
           CLUSTER_CHECK=$(aws eks describe-cluster --name $CLUSTER_NAME --region ${{ secrets.AWS_DEFAULT_REGION }} 2>&1 || true)
-
+      
           if [[ $CLUSTER_CHECK == *"ResourceNotFoundException"* ]]; then
-            echo "Cluster does not exist, creating it..."
-            terraform state rm aws_eks_cluster.fastapi-cluster
-            terraform apply -target=aws_eks_cluster.$CLUSTER_NAME -auto-approve
+            echo "Cluster does not exist, creating it with Terraform..."
+            terraform apply -target=aws_eks_cluster.fastapi_cluster -auto-approve
           else
             echo "Cluster exists."
           fi
-
-      - name: Update Kubeconfig
-        run: |
-          aws eks update-kubeconfig --name fastapi-cluster --region ${{ secrets.AWS_DEFAULT_REGION }}
+      
 
       - name: Deploy to Kubernetes
         run: |
-          cd infra
-          sed -i "s/latest/${{ github.sha }}/g" deployment.yaml
-          kubectl apply -f deployment.yaml --validate=false
+            aws eks update-kubeconfig --name fastapi-cluster --region ${{ secrets.AWS_DEFAULT_REGION }}
+            kubectl apply -f infra/deployment.yaml
