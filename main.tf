@@ -119,10 +119,6 @@ resource "aws_eks_node_group" "fastapi_node_group" {
 
   disk_size = 20
 
-  remote_access {
-    ec2_ssh_key = "your-ssh-key-name"  # Replace with your key name if needed
-  }
-
   # Enable monitoring and tags for nodes
   ami_type = "AL2_x86_64"
 
