@@ -47,7 +47,7 @@ jobs:
           
           if [[ $REPO_CHECK == *"RepositoryNotFoundException"* ]]; then
             echo "Repository does not exist, creating it..."
-            terraform apply -target=aws_ecr_repository.api
+            terraform apply -target=aws_ecr_repository.api -auto-approve
           else
             echo "Repository exists, importing into Terraform..."
             terraform import aws_ecr_repository.api $REPO_NAME
