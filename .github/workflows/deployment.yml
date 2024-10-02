@@ -1,4 +1,4 @@
-name: TMS Project PROD Pipeline EKS
+name: Deployment TF
 
 on:
   push:
