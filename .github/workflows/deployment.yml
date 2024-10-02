@@ -43,14 +43,22 @@ jobs:
       - name: Check if ECR Repository exists, then import or create
         run: |
           REPO_NAME="fastapi-server"
-          REPO_CHECK=$(aws ecr describe-repositories --repository-names $REPO_NAME 2>&1 || true)
-          
-          if [[ $REPO_CHECK == *"RepositoryNotFoundException"* ]]; then
-            echo "Repository does not exist, creating it..."
-            terraform apply -target=aws_ecr_repository.api -auto-approve
+          RESOURCE_NAME="aws_ecr_repository.api"
+      
+          # Check if the resource is already managed by Terraform
+          if terraform state list | grep -q "$RESOURCE_NAME"; then
+            echo "Resource is already managed by Terraform."
           else
-            echo "Repository exists, importing into Terraform..."
-            terraform import aws_ecr_repository.api $REPO_NAME
+            # Check if the repository exists in AWS
+            REPO_CHECK=$(aws ecr describe-repositories --repository-names $REPO_NAME 2>&1 || true)
+            
+            if [[ $REPO_CHECK == *"RepositoryNotFoundException"* ]]; then
+              echo "Repository does not exist, creating it..."
+              terraform apply -target=$RESOURCE_NAME -auto-approve
+            else
+              echo "Repository exists, importing into Terraform..."
+              terraform import $RESOURCE_NAME $REPO_NAME
+            fi
           fi
 
       - name: Plan Terraform changes
