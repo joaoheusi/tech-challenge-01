@@ -120,3 +120,5 @@ jobs:
         run: |
             aws eks update-kubeconfig --name fastapi-cluster --region ${{ secrets.AWS_DEFAULT_REGION }}
             kubectl apply -f infra/deployment.yaml
+            kubectl apply -f infra/service.yaml
+        
