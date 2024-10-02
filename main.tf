@@ -1,25 +1,40 @@
 # main.tf
 
+
+
+terraform {
+  required_providers {
+    aws = { source = "hashicorp/aws", version = "5.17.0" }
+  }
+  backend "s3" {
+    bucket         = "your-terraform-state-bucket-fiap"
+    key            = "fastapi-server/terraform.tfstate"
+    region         = "sa-east-1"
+    encrypt        = true
+    dynamodb_table = "terraform-locks"
+  }
+}
+
 provider "aws" {
-  region = var.aws_region
+  region     = var.aws_region     # You can set this as a variable
+  access_key = var.aws_access_key # You can set this as a variable
+  secret_key = var.aws_secret_key # You can set this as a variable
 }
 
-variable "aws_region" {
-  description = "The AWS region to deploy to"
-  type        = string
-  default     = "us-east-1"
-}
-
-variable "aws_account_id" {
-  description = "The AWS account ID where the resources are created"
-  type        = string
-}
-
-# ECR Repository
 resource "aws_ecr_repository" "api" {
   name                 = "fastapi-server"
   image_tag_mutability = "MUTABLE"
+  force_delete         = true
+
+  image_scanning_configuration {
+    scan_on_push = true
+  }
 }
+
+locals {
+  repo_url = aws_ecr_repository.api.repository_url
+}
+
 
 # IAM Role for EKS
 resource "aws_iam_role" "eks_role" {
@@ -49,30 +64,3 @@ resource "aws_iam_role_policy_attachment" "eks_policy" {
 output "ecr_repository_url" {
   value = aws_ecr_repository.api.repository_url
 }
-
-# Pass variables to be used by the GitHub Action
-terraform {
-  required_version = ">= 1.5.0"
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 4.0"
-    }
-  }
-}
-
-# This ensures the correct region and account ID are used
-locals {
-  aws_region  = var.aws_region
-  account_id  = var.aws_account_id
-}
-
-# Define the backend for storing the Terraform state file
-# Uncomment and configure if you want to use a remote backend (e.g., S3)
-# terraform {
-#   backend "s3" {
-#     bucket = "your-terraform-state-bucket"
-#     key    = "path/to/your/terraform.tfstate"
-#     region = var.aws_region
-#   }
-# }
