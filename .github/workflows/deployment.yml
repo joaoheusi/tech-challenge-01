@@ -110,6 +110,7 @@ jobs:
 
           if [[ $CLUSTER_CHECK == *"ResourceNotFoundException"* ]]; then
             echo "Cluster does not exist, creating it..."
+            terraform state rm aws_eks_cluster.fastapi-cluster
             terraform apply -target=aws_eks_cluster.$CLUSTER_NAME -auto-approve
           else
             echo "Cluster exists."
