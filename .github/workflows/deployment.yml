@@ -80,7 +80,7 @@ jobs:
           MERCADO_PAGO_TOKEN=${{ secrets.MERCADO_PAGO_TOKEN }}
           EOF
 
-      - name: Build, tag, and push Docker image
+      - name: Build, tag, and push Docker imagx
         run: |
           docker build --platform linux/amd64 -t ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_DEFAULT_REGION }}.amazonaws.com/fastapi-server:latest ./code
           docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_DEFAULT_REGION }}.amazonaws.com/fastapi-server:latest 
