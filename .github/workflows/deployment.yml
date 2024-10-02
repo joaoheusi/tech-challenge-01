@@ -105,7 +105,7 @@ jobs:
 
       - name: Update Kubeconfig
         run: |
-          aws eks update-kubeconfig --name fastapi-cluster --region ${{ secrets.AWS_REGION }}
+          aws eks update-kubeconfig --name fastapi-cluster --region ${{ secrets.AWS_DEFAULT_REGION }}
 
       - name: Deploy to Kubernetes
         run: |
